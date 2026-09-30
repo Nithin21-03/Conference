@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Conference Tracks & Topics | ICBDTT-2026 Sapthagiri NPS University{% endblock %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<section style="background: linear-gradient(135deg, #001040 0%, #000c30 100%); color: #ffffff; padding: 60px 0; border-bottom: 3px solid var(--accent-gold);">
+  <div class="container">
+    <span class="badge badge-gold" style="margin-bottom: 12px;">Research Scope</span>
+    <h1 style="color:#ffffff; font-size:2.6rem; margin-bottom:12px;">Conference Tracks &amp; Research Areas</h1>
+    <p style="color:#cbd5e1; font-size:1.1rem; max-width:780px;">
+      Explore the six primary technical tracks covering the entire lifecycle of big data engineering, intelligent analytics, deep learning models, and secure distributed infrastructure.
+    </p>
+  </div>
+</section>
+
+<!-- Tracks Section -->
+<section class="section">
+  <div class="container">
+
+    <div style="display:flex; flex-direction:column; gap:40px;">
+      {% for track in tracks %}
+      <div id="track-{{ track.track_number }}" style="background:#ffffff; border-radius:var(--radius-lg); border:1px solid var(--border-light); box-shadow:var(--shadow-sm); overflow:hidden; transition:var(--transition);" class="track-detail-box">
+        
+        <div style="background:linear-gradient(90deg, #001040 0%, #123569 100%); color:#ffffff; padding:24px 32px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; border-bottom:3px solid var(--accent-gold);">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div style="width:48px; height:48px; border-radius:var(--radius-sm); background:var(--accent-gold); color:var(--primary-navy); display:flex; align-items:center; justify-content:center; font-size:1.5rem;">
+              <i class="bi {{ track.icon }}"></i>
+            </div>
+            <div>
+              <span style="font-size:0.8rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">{{ track.code }}</span>
+              <h3 style="color:#ffffff; font-size:1.45rem; margin:0;">{{ track.title }}</h3>
+            </div>
+          </div>
+          <a href="{{ url_for('submission.submit_paper') }}?track={{ track.title|urlencode }}" class="btn btn-primary btn-sm">
+            <i class="bi bi-cloud-arrow-up"></i> Submit to Track {{ track.track_number }}
+          </a>
+        </div>
+
+        <div style="padding:32px;">
+          <p style="font-size:1.02rem; color:var(--text-secondary); margin-bottom:24px; line-height:1.7;">
+            {{ track.description }}
+          </p>
+
+          <h4 style="font-size:1.08rem; color:var(--primary-navy); margin-bottom:16px; border-left:3px solid var(--accent-gold); padding-left:12px;">
+            Suggested Topic Areas (Included but not limited to):
+          </h4>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px;">
+            {% for topic in track.get_topic_list() %}
+            <div style="background:var(--bg-subtle); border-radius:var(--radius-sm); padding:10px 14px; border:1px solid var(--border-light); font-size:0.92rem; color:var(--text-primary); display:flex; align-items:center; gap:10px;">
+              <i class="bi bi-check2-circle" style="color:var(--accent-gold); font-size:1.1rem; flex-shrink:0;"></i>
+              <span>{{ topic }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Submission Guidelines CTA Box -->
+    <div style="margin-top:60px; background:linear-gradient(135deg, var(--accent-gold-light) 0%, #ffffff 100%); border:2px dashed var(--accent-gold); border-radius:var(--radius-lg); padding:36px; text-align:center;">
+      <h3 style="font-size:1.5rem; margin-bottom:12px; color:var(--primary-navy);">Don't See Your Exact Research Topic?</h3>
+      <p style="color:var(--text-secondary); max-width:680px; margin:0 auto 24px; font-size:0.98rem;">
+        If your paper is related to the broader domain of Big Data Tools, Techniques, High-Performance Computing, or Applied AI, you are warmly invited to submit under the most closely aligned track.
+      </p>
+      <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+        <a href="{{ url_for('main.call_for_papers') }}" class="btn btn-navy">
+          Review Submission Guidelines
+        </a>
+        <a href="{{ url_for('submission.submit_paper') }}" class="btn btn-primary">
+          Open Paper Submission Portal
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

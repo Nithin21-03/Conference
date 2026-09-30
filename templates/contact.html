@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us | International Conference on Big Data Tools and Techniques{% endblock %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<section style="background: linear-gradient(135deg, #001040 0%, #000c30 100%); color: #ffffff; padding: 50px 0; border-bottom: 3px solid var(--accent-gold);">
+  <div class="container">
+    <span class="badge badge-gold" style="margin-bottom: 12px;">Contact</span>
+    <h1 style="color:#ffffff; font-size:2.5rem; margin-bottom:8px;">Contact Conference Secretariat</h1>
+    <p style="color:#cbd5e1; font-size:1.05rem; max-width:760px;">
+      Sapthagiri NPS University (SNPSU), Bengaluru, Karnataka, India
+    </p>
+  </div>
+</section>
+
+<!-- Contact Form & Info Section -->
+<section class="section">
+  <div class="container">
+    
+    <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:44px;" class="about-grid">
+      
+      <!-- Contact Form -->
+      <div class="form-card">
+        <h3 style="font-size:1.4rem; color:var(--primary-navy); margin-bottom:8px;">Send a Message</h3>
+        <p style="color:var(--text-secondary); font-size:0.92rem; margin-bottom:24px;">
+          Have inquiries regarding paper submissions, registration, or schedule? Please fill out the form below.
+        </p>
+
+        <form action="{{ url_for('contact.contact') }}" method="POST">
+          <div class="form-grid">
+            <div class="form-group form-full">
+              <label class="form-label" for="name">Name <span class="req">*</span></label>
+              <input type="text" id="name" name="name" class="form-input" value="{{ form.get('name', '') }}" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group form-full">
+              <label class="form-label" for="email">Email <span class="req">*</span></label>
+              <input type="email" id="email" name="email" class="form-input" value="{{ form.get('email', '') }}" placeholder="Enter your email address" required>
+            </div>
+
+            <div class="form-group form-full">
+              <label class="form-label" for="subject">Subject <span class="req">*</span></label>
+              <input type="text" id="subject" name="subject" class="form-input" value="{{ form.get('subject', '') }}" placeholder="Inquiry subject" required>
+            </div>
+
+            <div class="form-group form-full">
+              <label class="form-label" for="message">Message <span class="req">*</span></label>
+              <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Enter your message..." required>{{ form.get('message', '') }}</textarea>
+            </div>
+
+            <div class="form-group form-full">
+              <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+                <i class="bi bi-send-fill"></i> Submit Message
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Contact Directory -->
+      <div>
+        
+        <div style="background:linear-gradient(145deg, #001040 0%, #123569 100%); border-radius:var(--radius-lg); padding:30px; color:#ffffff; box-shadow:var(--shadow-md); margin-bottom:28px; border:1px solid rgba(198,158,102,0.3);">
+          <h3 style="color:#ffffff; font-size:1.25rem; margin-bottom:16px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px;">
+            Conference Secretariat
+          </h3>
+          <ul class="footer-contact-list" style="display:flex; flex-direction:column; gap:14px;">
+            <li>
+              <i class="bi bi-geo-alt-fill" style="font-size:1.2rem;"></i>
+              <div>
+                <strong>University Address:</strong><br>
+                {{ CONF_CAMPUS }}
+              </div>
+            </li>
+            <li>
+              <i class="bi bi-envelope-fill" style="font-size:1.2rem;"></i>
+              <div>
+                <strong>Conference Email:</strong><br>
+                <span>{{ CONF_EMAIL }}</span>
+              </div>
+            </li>
+            <li>
+              <i class="bi bi-telephone-fill" style="font-size:1.2rem;"></i>
+              <div>
+                <strong>Phone Number:</strong><br>
+                <span>{{ CONF_PHONE }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div style="background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:26px; box-shadow:var(--shadow-sm);">
+          <h4 style="font-size:1.1rem; color:var(--primary-navy); margin-bottom:12px;">Conference Coordinators</h4>
+          <div style="margin-bottom:12px;">
+            <strong>[CONFERENCE COORDINATOR 1]</strong>
+            <div style="font-size:0.82rem; color:var(--accent-gold); font-weight:600;">Conference Coordinator</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Sapthagiri NPS University</div>
+          </div>
+          <div>
+            <strong>[CONFERENCE COORDINATOR 2]</strong>
+            <div style="font-size:0.82rem; color:var(--accent-gold); font-weight:600;">Technical Coordinator</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Sapthagiri NPS University</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

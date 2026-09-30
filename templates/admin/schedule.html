@@ -1,0 +1,139 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Manage Schedule | ICBDTT-2026 Admin{% endblock %}
+{% block page_title %}Programme Schedule Agenda Management{% endblock %}
+
+{% block content %}
+
+<div style="display:grid; grid-template-columns:1.5fr 1fr; gap:32px;" class="about-grid">
+  
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h3 style="margin:0;">Day 1 &amp; Day 2 Sessions</h3>
+    </div>
+    <div class="admin-card-body" style="padding:0;">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Day / Time</th>
+            <th>Session</th>
+            <th>Type</th>
+            <th>Venue</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in day1 %}
+          <tr>
+            <td>
+              <span class="badge badge-navy" style="font-size:0.7rem;">Day 1</span>
+              <div style="font-weight:700; font-size:0.85rem; margin-top:2px;">{{ item.start_time }}</div>
+            </td>
+            <td>
+              <div style="font-weight:700; font-size:0.9rem; color:var(--primary-navy);">{{ item.session_title }}</div>
+              {% if item.speaker %}<div style="font-size:0.78rem; color:var(--accent-gold);">{{ item.speaker }}</div>{% endif %}
+            </td>
+            <td><span class="badge badge-gold" style="font-size:0.72rem;">{{ item.session_type }}</span></td>
+            <td style="font-size:0.82rem; color:var(--text-muted);">{{ item.venue }}</td>
+            <td>
+              <form action="{{ url_for('admin.delete_schedule', id=item.id) }}" method="POST" onsubmit="return confirm('Remove session?');" style="display:inline;">
+                <button type="submit" class="btn btn-sm" style="background:#fee2e2; color:#dc2626; border:none; padding:5px 8px;" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+
+          {% for item in day2 %}
+          <tr>
+            <td>
+              <span class="badge badge-cyan" style="font-size:0.7rem;">Day 2</span>
+              <div style="font-weight:700; font-size:0.85rem; margin-top:2px;">{{ item.start_time }}</div>
+            </td>
+            <td>
+              <div style="font-weight:700; font-size:0.9rem; color:var(--primary-navy);">{{ item.session_title }}</div>
+              {% if item.speaker %}<div style="font-size:0.78rem; color:var(--accent-gold);">{{ item.speaker }}</div>{% endif %}
+            </td>
+            <td><span class="badge badge-gold" style="font-size:0.72rem;">{{ item.session_type }}</span></td>
+            <td style="font-size:0.82rem; color:var(--text-muted);">{{ item.venue }}</td>
+            <td>
+              <form action="{{ url_for('admin.delete_schedule', id=item.id) }}" method="POST" onsubmit="return confirm('Remove session?');" style="display:inline;">
+                <button type="submit" class="btn btn-sm" style="background:#fee2e2; color:#dc2626; border:none; padding:5px 8px;" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3 style="font-size:1.25rem; color:var(--primary-navy); margin-bottom:20px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px;">
+      <i class="bi bi-clock-history" style="color:var(--accent-gold);"></i> Add Schedule Session
+    </h3>
+
+    <form action="{{ url_for('admin.add_schedule') }}" method="POST">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sch_day">Conference Day <span class="req">*</span></label>
+        <select id="sch_day" name="day_number" class="form-select" required>
+          <option value="1">Day 1</option>
+          <option value="2">Day 2</option>
+        </select>
+      </div>
+
+      <div class="form-grid" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label class="form-label" for="sch_start">Start Time <span class="req">*</span></label>
+          <input type="text" id="sch_start" name="start_time" class="form-input" placeholder="09:00 AM" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sch_end">End Time <span class="req">*</span></label>
+          <input type="text" id="sch_end" name="end_time" class="form-input" placeholder="10:30 AM" required>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sch_type">Session Classification</label>
+        <select id="sch_type" name="session_type" class="form-select">
+          <option value="Keynote">Keynote Address</option>
+          <option value="Technical Session">Technical Paper Presentation</option>
+          <option value="Inauguration">Inauguration Ceremony</option>
+          <option value="Panel">Industry-Academia Panel</option>
+          <option value="Valedictory">Valedictory &amp; Awards</option>
+          <option value="Break">Tea / Lunch Break</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sch_title">Session Title <span class="req">*</span></label>
+        <input type="text" id="sch_title" name="session_title" class="form-input" placeholder="e.g. Keynote Address 4" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sch_speaker">Speaker / Session Chair</label>
+        <input type="text" id="sch_speaker" name="speaker" class="form-input" placeholder="e.g. Dr. Rajesh K. Varma">
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sch_topic">Presentation Topic</label>
+        <input type="text" id="sch_topic" name="topic" class="form-input" placeholder="e.g. Lakehouses in Modern Enterprise">
+      </div>
+
+      <div class="form-group" style="margin-bottom:20px;">
+        <label class="form-label" for="sch_venue">Venue Room / Auditorium</label>
+        <input type="text" id="sch_venue" name="venue" class="form-input" value="Dr. Sri Khoday Eshwarsa Auditorium">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;">
+        <i class="bi bi-plus-circle"></i> Save Schedule Item
+      </button>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

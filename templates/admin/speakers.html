@@ -1,0 +1,121 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Manage Speakers | ICBDTT-2026 Admin{% endblock %}
+{% block page_title %}Conference Keynote &amp; Invited Speakers{% endblock %}
+
+{% block content %}
+
+<div style="display:grid; grid-template-columns:1.5fr 1fr; gap:32px;" class="about-grid">
+  
+  <!-- Speakers List -->
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h3 style="margin:0;">Current Speakers ({{ speakers|length }})</h3>
+    </div>
+    <div class="admin-card-body" style="padding:0;">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>Speaker Details</th>
+            <th>Type</th>
+            <th>Session Topic</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in speakers %}
+          <tr>
+            <td style="width:60px;">
+              <img src="{{ url_for('static', filename='images/speakers/' + s.photo) if s.photo else url_for('static', filename='images/speakers/speaker1.svg') }}" alt="{{ s.name }}" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:1px solid var(--accent-gold);">
+            </td>
+            <td>
+              <div style="font-weight:700; font-size:0.95rem; color:var(--primary-navy);">{{ s.name }}</div>
+              <div style="font-size:0.8rem; color:var(--accent-gold); font-weight:600;">{{ s.designation }}</div>
+              <div style="font-size:0.78rem; color:var(--text-muted);">{{ s.institution }} &bull; {{ s.country }}</div>
+            </td>
+            <td><span class="badge badge-gold">{{ s.speaker_type }}</span></td>
+            <td>
+              <div style="font-size:0.82rem; max-width:200px; color:var(--text-secondary); line-height:1.4;">
+                {{ s.session_topic or 'To be announced' }}
+              </div>
+            </td>
+            <td>
+              <form action="{{ url_for('admin.delete_speaker', id=s.id) }}" method="POST" onsubmit="return confirm('Delete this speaker?');" style="display:inline;">
+                <button type="submit" class="btn btn-sm" style="background:#fee2e2; color:#dc2626; border:none; padding:5px 8px;" title="Delete Speaker">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">No speakers listed.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add New Speaker Form -->
+  <div class="form-card">
+    <h3 style="font-size:1.25rem; color:var(--primary-navy); margin-bottom:20px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px; display:flex; align-items:center; gap:8px;">
+      <i class="bi bi-person-plus-fill" style="color:var(--accent-gold);"></i> Add New Speaker
+    </h3>
+
+    <form action="{{ url_for('admin.add_speaker') }}" method="POST">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sp_name">Full Name <span class="req">*</span></label>
+        <input type="text" id="sp_name" name="name" class="form-input" placeholder="e.g. Prof. David A. Sterling" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sp_desig">Designation <span class="req">*</span></label>
+        <input type="text" id="sp_desig" name="designation" class="form-input" placeholder="e.g. Professor of Computer Science" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sp_inst">Affiliation / University <span class="req">*</span></label>
+        <input type="text" id="sp_inst" name="institution" class="form-input" placeholder="e.g. Stanford University" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sp_country">Country</label>
+        <input type="text" id="sp_country" name="country" class="form-input" placeholder="e.g. USA" value="India">
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sp_type">Speaker Role</label>
+        <select id="sp_type" name="speaker_type" class="form-select">
+          <option value="Keynote">Keynote Speaker</option>
+          <option value="Invited">Invited Speaker</option>
+          <option value="Session Chair">Session Chair</option>
+          <option value="Guest">Guest Dignitary</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sp_topic">Session Presentation Topic</label>
+        <input type="text" id="sp_topic" name="session_topic" class="form-input" placeholder="e.g. Exabyte Query Engines">
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="sp_bio">Short Academic Biography <span class="req">*</span></label>
+        <textarea id="sp_bio" name="biography" class="form-textarea" rows="3" placeholder="Brief career summary and research credentials..." required></textarea>
+      </div>
+
+      <div class="form-group" style="margin-bottom:20px;">
+        <label class="form-label" for="sp_order">Display Priority Order</label>
+        <input type="number" id="sp_order" name="display_order" class="form-input" value="1" min="1">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;">
+        <i class="bi bi-plus-circle"></i> Save Speaker Profile
+      </button>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

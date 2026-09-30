@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block title %}International Conference on Big Data Tools and Techniques (ICBDTT-2026) | Sapthagiri NPS University{% endblock %}
+
+{% block content %}
+
+<!-- Professional Institutional Hero Banner -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-inner">
+      
+      <!-- Institutional Affiliation Badge -->
+      <div class="hero-affiliation">
+        <span class="affil-inst">Sapthagiri NPS University (SNPSU), Bengaluru</span>
+        <span class="affil-dept">School of Computer Science &amp; Engineering</span>
+      </div>
+
+      <!-- Main Conference Heading -->
+      <h1 class="hero-title">
+        <span class="hero-conf-super">International Conference on</span>
+        <span class="hero-conf-main">Big Data Tools and Techniques</span>
+        <span class="hero-conf-tag">ICBDTT-2026</span>
+      </h1>
+
+      <!-- Conference Theme -->
+      <p class="hero-theme">
+        "Advancing Data-Driven Research, Innovation and Intelligent Solutions"
+      </p>
+
+      <!-- Key Conference Parameters Grid -->
+      <div class="hero-meta-panel">
+        <div class="meta-panel-item">
+          <i class="bi bi-calendar3"></i>
+          <div>
+            <span class="meta-label">Conference Date</span>
+            <span class="meta-val">{{ CONF_DATE }}</span>
+          </div>
+        </div>
+        <div class="meta-panel-item">
+          <i class="bi bi-building"></i>
+          <div>
+            <span class="meta-label">Host Venue</span>
+            <span class="meta-val">{{ CONF_VENUE }}</span>
+          </div>
+        </div>
+        <div class="meta-panel-item">
+          <i class="bi bi-geo-alt-fill"></i>
+          <div>
+            <span class="meta-label">Location</span>
+            <span class="meta-val">Sapthagiri NPS University, Bengaluru</span>
+          </div>
+        </div>
+        <div class="meta-panel-item">
+          <i class="bi bi-cpu-fill"></i>
+          <div>
+            <span class="meta-label">Conference Focus</span>
+            <span class="meta-val">Big Data Tools &amp; Techniques</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTAs: Registration & Paper Submission -->
+      <div class="hero-cta-group">
+        <a href="{{ url_for('submission.submit_paper') }}" class="btn btn-primary btn-lg">
+          <i class="bi bi-cloud-arrow-up-fill"></i> Submit Research Paper
+        </a>
+        <a href="{{ url_for('registration.register') }}" class="btn btn-outline-white btn-lg">
+          <i class="bi bi-ticket-perforated-fill"></i> Register for Conference
+        </a>
+        <a href="{{ url_for('main.download_template') }}" class="btn btn-outline-gold btn-lg">
+          <i class="bi bi-file-earmark-word"></i> Paper Template (.docx)
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Conference Welcome & Overview Section -->
+<section class="section">
+  <div class="container">
+    <div class="about-grid">
+      
+      <!-- Left Column: Conference Overview & Welcome -->
+      <div>
+        <div class="section-title-wrap">
+          <span class="section-subheading">Conference Overview</span>
+          <h2 class="academic-heading">Welcome to ICBDTT-2026</h2>
+        </div>
+
+        <p class="academic-lead-text">
+          The <strong>International Conference on Big Data Tools and Techniques (ICBDTT-2026)</strong> is organized and hosted by <strong>Sapthagiri NPS University (SNPSU), Bengaluru, India</strong>. The conference serves as a premier international academic forum for scholars, faculty members, researchers, and technical specialists to present and deliberate on foundational and applied innovations in large-scale data engineering.
+        </p>
+
+        <p class="academic-text">
+          With the exponential expansion of digital datasets across healthcare, scientific computing, enterprise platforms, and IoT networks, developing reliable, scalable, and secure data tools is paramount. ICBDTT-2026 brings together original contributions spanning <strong>Big Data Analytics</strong>, <strong>Artificial Intelligence &amp; Machine Learning</strong>, <strong>Distributed Cloud Platforms</strong>, <strong>Data Science</strong>, <strong>IoT Edge Computing</strong>, and <strong>Data Privacy &amp; Cybersecurity</strong>.
+        </p>
+
+        <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:24px;">
+          <a href="{{ url_for('main.about') }}" class="btn btn-navy">
+            Detailed About Conference <i class="bi bi-arrow-right"></i>
+          </a>
+          <a href="{{ url_for('main.call_for_papers') }}" class="btn btn-outline-gold">
+            Call for Papers &amp; Scope
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Policy Notice & Author Quick Resources -->
+      <div>
+        <!-- Peer Review & Proceedings Note -->
+        <div class="academic-notice-card" style="margin:0 0 24px 0;">
+          <div class="notice-icon">
+            <i class="bi bi-journal-check"></i>
+          </div>
+          <div>
+            <h4 class="notice-title">Peer Review &amp; Proceedings Policy</h4>
+            <p class="notice-body">
+              All submitted manuscripts undergo a rigorous double-blind peer review process by qualified program committee reviewers. All accepted, registered, and presented research papers will be included in the official conference proceedings.
+            </p>
+          </div>
+        </div>
+
+        <!-- Author Resources Card -->
+        <div class="sidebar-academic-card">
+          <div class="sidebar-card-header">
+            <i class="bi bi-folder-symlink-fill"></i>
+            <h3>Author Quick Resources</h3>
+          </div>
+          <div class="sidebar-card-body">
+            <ul class="sidebar-links-list">
+              <li>
+                <a href="{{ url_for('main.download_template') }}">
+                  <i class="bi bi-file-earmark-word-fill"></i> Download Manuscript Template (.docx)
+                </a>
+              </li>
+              <li>
+                <a href="{{ url_for('main.call_for_papers') }}">
+                  <i class="bi bi-file-text"></i> Call for Papers &amp; Guidelines
+                </a>
+              </li>
+              <li>
+                <a href="{{ url_for('submission.track_status') }}">
+                  <i class="bi bi-search"></i> Check Paper Review Status
+                </a>
+              </li>
+              <li>
+                <a href="{{ url_for('submission.submit_paper') }}">
+                  <i class="bi bi-cloud-arrow-up-fill"></i> Online Paper Submission Portal
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Important Deadlines & Milestones Roadmap Section -->
+<section class="section section-alt">
+  <div class="container">
+    
+    <div class="section-header">
+      <span class="section-subtitle">Conference Timeline</span>
+      <h2 class="section-title">Important Deadlines &amp; Dates</h2>
+      <p class="section-description">
+        Key timeline milestones for research manuscript submissions, peer review notifications, and registration.
+      </p>
+    </div>
+
+    <div class="dates-grid">
+      {% for d in dates %}
+      <div class="date-card {% if loop.first %}active-date{% endif %}">
+        <div class="date-status">
+          <span class="badge badge-gold">Milestone 0{{ loop.index }}</span>
+        </div>
+        <div class="date-val">{{ d.date_value }}</div>
+        <div class="date-title">{{ d.title }}</div>
+        <div class="date-desc">{{ d.description }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="text-align:center; margin-top:40px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+      <a href="{{ url_for('submission.submit_paper') }}" class="btn btn-primary btn-lg">
+        <i class="bi bi-cloud-arrow-up-fill"></i> Submit Research Paper
+      </a>
+      <a href="{{ url_for('main.download_template') }}" class="btn btn-outline-gold btn-lg">
+        <i class="bi bi-file-earmark-word"></i> Download Manuscript Template (.docx)
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Keynote Speakers Section -->
+<section class="section">
+  <div class="container">
+    
+    <div class="section-header">
+      <span class="section-subtitle">Distinguished Academics</span>
+      <h2 class="section-title">Keynote &amp; Invited Speakers</h2>
+      <p class="section-description">
+        Keynote lectures and plenary sessions delivered by recognized researchers and scholars.
+      </p>
+    </div>
+
+    <div class="speakers-grid">
+      {% for speaker in speakers %}
+      <div class="speaker-card">
+        <div class="speaker-photo-wrapper">
+          <img src="{{ url_for('static', filename='images/speakers/' + speaker.photo) if speaker.photo else url_for('static', filename='images/speakers/speaker1.svg') }}" alt="{{ speaker.name }}">
+          <span class="speaker-type-tag">{{ speaker.speaker_type }}</span>
+        </div>
+        <div class="speaker-info">
+          <h4 class="speaker-name">{{ speaker.name }}</h4>
+          <div class="speaker-desig">{{ speaker.designation }}</div>
+          <div class="speaker-inst"><i class="bi bi-building"></i> {{ speaker.institution }}</div>
+          
+          {% if speaker.session_topic %}
+          <div class="speaker-topic">
+            <strong>Keynote Topic:</strong><br>
+            {{ speaker.session_topic }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="text-align:center; margin-top:40px;">
+      <a href="{{ url_for('main.speakers') }}" class="btn btn-navy">
+        Explore Speaker Profiles <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Host Campus & Venue Section -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <span class="section-subtitle" style="color:var(--accent-gold);">Host University</span>
+        <h2 class="section-title" style="color:#ffffff;">Conference Venue &amp; Secretariat</h2>
+        <p style="color:#cbd5e1; font-size:1.05rem; line-height:1.7;">
+          The conference will be hosted at the modern campus of <strong>Sapthagiri NPS University (SNPSU)</strong> located in Bengaluru, the premier technology and research capital of Karnataka, India.
+        </p>
+        <div style="margin:24px 0; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:12px; color:#ffffff;">
+            <i class="bi bi-building" style="color:var(--accent-gold); font-size:1.2rem;"></i>
+            <span><strong>Venue:</strong> {{ CONF_VENUE }}</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; color:#ffffff;">
+            <i class="bi bi-geo-alt-fill" style="color:var(--accent-gold); font-size:1.2rem;"></i>
+            <span><strong>Address:</strong> {{ CONF_CAMPUS }}</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; color:#ffffff;">
+            <i class="bi bi-envelope-fill" style="color:var(--accent-gold); font-size:1.2rem;"></i>
+            <span><strong>Secretariat:</strong> {{ CONF_EMAIL }}</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+          <a href="{{ url_for('main.venue') }}" class="btn btn-primary">
+            Venue &amp; Travel Directions <i class="bi bi-arrow-right"></i>
+          </a>
+          <a href="{{ url_for('contact.contact') }}" class="btn btn-outline-white">
+            Contact Secretariat
+          </a>
+        </div>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(198,158,102,0.3); border-radius:var(--radius-md); padding:36px; text-align:center;">
+        <i class="bi bi-pin-map-fill" style="font-size:3.2rem; color:var(--accent-gold); margin-bottom:14px; display:inline-block;"></i>
+        <h3 style="color:#ffffff; font-size:1.35rem; margin-bottom:8px;">Sapthagiri NPS University</h3>
+        <p style="color:#cbd5e1; font-size:0.92rem; margin-bottom:24px;">
+          Bengaluru, Karnataka, India
+        </p>
+        <a href="https://maps.google.com/?q=Sapthagiri+NPS+University+Bengaluru" target="_blank" rel="noopener" class="btn btn-outline-gold" style="width:100%;">
+          <i class="bi bi-geo-alt"></i> Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

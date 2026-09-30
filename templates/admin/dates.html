@@ -1,0 +1,100 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Manage Important Dates | ICBDTT-2026 Admin{% endblock %}
+{% block page_title %}Important Dates &amp; Deadlines Management{% endblock %}
+
+{% block content %}
+
+<div style="display:grid; grid-template-columns:1.4fr 1fr; gap:32px;" class="about-grid">
+  
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h3 style="margin:0;">Scheduled Milestones ({{ dates|length }})</h3>
+    </div>
+    <div class="admin-card-body" style="padding:0;">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Milestone Title</th>
+            <th>Date String</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in dates %}
+          <tr>
+            <td><strong>#{{ d.display_order }}</strong></td>
+            <td>
+              <div style="font-weight:700; color:var(--primary-navy);">{{ d.title }}</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">{{ d.description }}</div>
+            </td>
+            <td><strong style="color:var(--accent-gold);">{{ d.date_value }}</strong></td>
+            <td>
+              {% if d.status_badge == 'Completed' %}
+                <span class="badge badge-navy">Completed</span>
+              {% elif d.status_badge == 'Open' %}
+                <span class="badge badge-gold">Active</span>
+              {% else %}
+                <span class="badge badge-cyan">Upcoming</span>
+              {% endif %}
+            </td>
+            <td>
+              <form action="{{ url_for('admin.delete_date', id=d.id) }}" method="POST" onsubmit="return confirm('Remove date milestone?');" style="display:inline;">
+                <button type="submit" class="btn btn-sm" style="background:#fee2e2; color:#dc2626; border:none; padding:5px 8px;" title="Delete Date">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3 style="font-size:1.25rem; color:var(--primary-navy); margin-bottom:20px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px;">
+      <i class="bi bi-calendar-plus" style="color:var(--accent-gold);"></i> Add New Milestone
+    </h3>
+
+    <form action="{{ url_for('admin.add_date') }}" method="POST">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="d_title">Milestone Title <span class="req">*</span></label>
+        <input type="text" id="d_title" name="title" class="form-input" placeholder="e.g. Camera-Ready Manuscript Due" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="d_val">Date Display String <span class="req">*</span></label>
+        <input type="text" id="d_val" name="date_value" class="form-input" placeholder="e.g. October 15, 2026" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="d_desc">Short Description</label>
+        <input type="text" id="d_desc" name="description" class="form-input" placeholder="e.g. Final formatted version with author bios">
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="d_badge">Status</label>
+        <select id="d_badge" name="status_badge" class="form-select">
+          <option value="Upcoming">Upcoming</option>
+          <option value="Open">Open / Active</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:20px;">
+        <label class="form-label" for="d_order">Order</label>
+        <input type="number" id="d_order" name="display_order" class="form-input" value="1" min="1">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;">
+        <i class="bi bi-plus-circle"></i> Save Milestone
+      </button>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

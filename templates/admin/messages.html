@@ -1,0 +1,82 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Contact Inquiries | ICBDTT-2026 Admin{% endblock %}
+{% block page_title %}Delegate &amp; Author Inquiries Inbox{% endblock %}
+
+{% block content %}
+
+<div class="admin-card">
+  <div class="admin-card-header">
+    <h3 style="margin:0;">Inquiries Received ({{ messages|length }})</h3>
+  </div>
+
+  <div class="admin-card-body" style="padding:0;">
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>From</th>
+            <th>Contact Details</th>
+            <th>Subject &amp; Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in messages %}
+          <tr>
+            <td><strong style="color:var(--primary-navy);">{{ m.name }}</strong></td>
+            <td>
+              <div style="font-size:0.85rem;"><a href="mailto:{{ m.email }}" style="color:var(--tech-cyan);">{{ m.email }}</a></div>
+              {% if m.phone %}<div style="font-size:0.78rem; color:var(--text-muted);"><i class="bi bi-telephone"></i> {{ m.phone }}</div>{% endif %}
+            </td>
+            <td>
+              <div style="font-weight:700; font-size:0.9rem; color:var(--primary-navy);">{{ m.subject }}</div>
+              <div style="font-size:0.85rem; color:var(--text-secondary); max-width:380px; line-height:1.5; margin-top:4px;">
+                {{ m.message }}
+              </div>
+            </td>
+            <td style="font-size:0.8rem; color:var(--text-muted); white-space:nowrap;">
+              {{ m.created_at.strftime('%Y-%m-%d %H:%M') }}
+            </td>
+            <td>
+              {% if m.status == 'Unread' %}
+                <span class="badge" style="background:#fef3c7; color:#b45309;">Unread</span>
+              {% else %}
+                <span class="badge badge-success">Replied</span>
+              {% endif %}
+            </td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                {% if m.status == 'Unread' %}
+                <form action="{{ url_for('admin.message_status', id=m.id) }}" method="POST" style="display:inline;">
+                  <input type="hidden" name="status" value="Replied">
+                  <button type="submit" class="btn btn-navy btn-sm" style="padding:4px 8px; font-size:0.75rem;" title="Mark as Replied">
+                    <i class="bi bi-check2"></i> Mark Read
+                  </button>
+                </form>
+                {% endif %}
+
+                <form action="{{ url_for('admin.delete_message', id=m.id) }}" method="POST" onsubmit="return confirm('Delete this message?');" style="display:inline;">
+                  <button type="submit" class="btn btn-sm" style="background:#fee2e2; color:#dc2626; border:none; padding:5px 8px;" title="Delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6" style="text-align:center; padding:36px; color:var(--text-muted);">
+              No messages received yet.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

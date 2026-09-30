@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}File Too Large (413) | ICBDTT-2026 Sapthagiri NPS University{% endblock %}
+
+{% block content %}
+<section class="section" style="min-height:60vh; display:flex; align-items:center;">
+  <div class="container container-narrow" style="text-align:center;">
+    <div style="font-family:'Outfit', sans-serif; font-size:5rem; font-weight:800; color:#dc2626; line-height:1; margin-bottom:12px;">413</div>
+    <h2 style="font-size:2rem; margin-bottom:16px;">Uploaded File Exceeds Maximum Size Limit</h2>
+    <p style="color:var(--text-secondary); max-width:540px; margin:0 auto 28px; font-size:1.05rem;">
+      The manuscript file you attempted to upload exceeds our maximum limit of <strong>16 MB</strong>. Please compress or optimize any high-resolution figures in your document and try again.
+    </p>
+    <div style="display:flex; justify-content:center; gap:14px;">
+      <a href="{{ url_for('submission.submit_paper') }}" class="btn btn-primary">
+        <i class="bi bi-arrow-left"></i> Return to Submission Form
+      </a>
+      <a href="{{ url_for('main.index') }}" class="btn btn-outline-gold">
+        Homepage
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

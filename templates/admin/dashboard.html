@@ -1,0 +1,170 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Dashboard Overview | ICBDTT-2026 Admin{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+
+<!-- Key Metrics Grid -->
+<div class="admin-stats-grid">
+  
+  <div class="admin-stat-card">
+    <div class="admin-stat-info">
+      <h6>Total Registrations</h6>
+      <div class="admin-stat-number">{{ stats.total_registrations }}</div>
+    </div>
+    <div class="admin-stat-icon">
+      <i class="bi bi-people-fill"></i>
+    </div>
+  </div>
+
+  <div class="admin-stat-card">
+    <div class="admin-stat-info">
+      <h6>Total Papers Submitted</h6>
+      <div class="admin-stat-number">{{ stats.total_submissions }}</div>
+    </div>
+    <div class="admin-stat-icon navy">
+      <i class="bi bi-file-earmark-text-fill"></i>
+    </div>
+  </div>
+
+  <div class="admin-stat-card">
+    <div class="admin-stat-info">
+      <h6>Accepted Papers</h6>
+      <div class="admin-stat-number" style="color:#059669;">{{ stats.accepted_papers }}</div>
+    </div>
+    <div class="admin-stat-icon green">
+      <i class="bi bi-check-circle-fill"></i>
+    </div>
+  </div>
+
+  <div class="admin-stat-card">
+    <div class="admin-stat-info">
+      <h6>Unread Inquiries</h6>
+      <div class="admin-stat-number" style="color:#d97706;">{{ stats.unread_messages }}</div>
+    </div>
+    <div class="admin-stat-icon cyan">
+      <i class="bi bi-envelope-fill"></i>
+    </div>
+  </div>
+
+</div>
+
+<!-- Quick Action Shortcuts -->
+<div style="background:#ffffff; border-radius:var(--radius-md); padding:20px 24px; border:1px solid var(--admin-border); margin-bottom:32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;">
+  <div>
+    <strong style="color:var(--primary-navy); font-size:1rem;">Quick Organizer Actions:</strong>
+    <span style="font-size:0.85rem; color:var(--admin-text-muted); margin-left:8px;">Common administration tasks</span>
+  </div>
+  <div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <a href="{{ url_for('admin.export_registrations') }}" class="btn btn-navy btn-sm">
+      <i class="bi bi-download"></i> Export Registrations (CSV)
+    </a>
+    <a href="{{ url_for('admin.submissions') }}" class="btn btn-outline-gold btn-sm">
+      <i class="bi bi-file-earmark-check"></i> Manage Submissions
+    </a>
+    <a href="{{ url_for('admin.speakers') }}" class="btn btn-primary btn-sm">
+      <i class="bi bi-person-plus-fill"></i> Manage Speakers
+    </a>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:28px;" class="about-grid">
+  
+  <!-- Recent Submissions Table -->
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h3>Recent Paper Submissions</h3>
+      <a href="{{ url_for('admin.submissions') }}" style="font-size:0.85rem; font-weight:600; color:var(--accent-gold);">
+        View All ({{ stats.total_submissions }}) &rarr;
+      </a>
+    </div>
+    <div class="admin-card-body" style="padding:0;">
+      {% if recent_submissions %}
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title &amp; Author</th>
+            <th>Track</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in recent_submissions %}
+          <tr>
+            <td><strong>{{ p.paper_id }}</strong></td>
+            <td>
+              <div style="font-weight:600; font-size:0.88rem; max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                {{ p.title }}
+              </div>
+              <div style="font-size:0.78rem; color:var(--text-muted);">{{ p.corresponding_author }}</div>
+            </td>
+            <td><span style="font-size:0.78rem;">{{ p.track[:16] }}...</span></td>
+            <td>
+              {% if p.status == 'Accepted' %}
+                <span class="status-badge status-accepted">{{ p.status }}</span>
+              {% elif p.status == 'Under Review' %}
+                <span class="status-badge status-review">{{ p.status }}</span>
+              {% elif p.status == 'Rejected' %}
+                <span class="status-badge status-rejected">{{ p.status }}</span>
+              {% else %}
+                <span class="status-badge status-submitted">{{ p.status }}</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding:30px; text-align:center; color:var(--text-muted); font-size:0.9rem;">
+        No paper submissions recorded yet.
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Recent Registrations Table -->
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h3>Recent Registrations</h3>
+      <a href="{{ url_for('admin.registrations') }}" style="font-size:0.85rem; font-weight:600; color:var(--accent-gold);">
+        View All ({{ stats.total_registrations }}) &rarr;
+      </a>
+    </div>
+    <div class="admin-card-body" style="padding:0;">
+      {% if recent_registrations %}
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Reg ID</th>
+            <th>Delegate</th>
+            <th>Category</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in recent_registrations %}
+          <tr>
+            <td><strong>{{ r.registration_id }}</strong></td>
+            <td>
+              <div style="font-weight:600; font-size:0.88rem;">{{ r.name }}</div>
+              <div style="font-size:0.78rem; color:var(--text-muted);">{{ r.institution[:25] }}</div>
+            </td>
+            <td><span class="badge badge-navy" style="font-size:0.72rem;">{{ r.participant_type }}</span></td>
+            <td style="font-size:0.82rem; color:var(--text-muted);">{{ r.created_at.strftime('%d %b %H:%M') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding:30px; text-align:center; color:var(--text-muted); font-size:0.9rem;">
+        No delegate registrations recorded yet.
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Manage Paper Submissions | ICBDTT-2026 Admin{% endblock %}
+{% block page_title %}Research Paper Submissions Management{% endblock %}
+
+{% block content %}
+
+<div class="admin-card">
+  <div class="admin-card-header">
+    <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+      <h3 style="margin:0;">Submitted Papers ({{ papers|length }})</h3>
+
+      <!-- Filter Form -->
+      <form action="{{ url_for('admin.submissions') }}" method="GET" class="admin-filter-bar">
+        <input type="text" name="search" class="admin-search-input" placeholder="Search title, author, ID..." value="{{ search }}">
+        
+        <select name="status" class="form-select" style="width:auto; padding:7px 12px; font-size:0.88rem;" onchange="this.form.submit()">
+          <option value="">All Review Statuses</option>
+          {% for st in statuses %}
+          <option value="{{ st }}" {% if selected_status == st %}selected{% endif %}>{{ st }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="track" class="form-select" style="width:auto; padding:7px 12px; font-size:0.88rem;" onchange="this.form.submit()">
+          <option value="">All Research Tracks</option>
+          {% for tr in tracks %}
+          <option value="{{ tr.title }}" {% if selected_track == tr.title %}selected{% endif %}>{{ tr.code }}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit" class="btn btn-navy btn-sm">Filter</button>
+        {% if search or selected_status or selected_track %}
+        <a href="{{ url_for('admin.submissions') }}" class="btn btn-outline-gold btn-sm">Reset</a>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-card-body" style="padding:0;">
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Paper ID</th>
+            <th>Title &amp; Track</th>
+            <th>Author Details</th>
+            <th>Uploaded Manuscript</th>
+            <th>Review Status</th>
+            <th>Submitted On</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for paper in papers %}
+          <tr>
+            <td><strong style="color:var(--primary-navy);">{{ paper.paper_id }}</strong></td>
+            <td>
+              <div style="font-weight:700; font-size:0.92rem; max-width:320px; line-height:1.4;">
+                {{ paper.title }}
+              </div>
+              <div style="font-size:0.78rem; color:var(--text-muted); margin-top:3px;">
+                <span class="badge badge-navy" style="font-size:0.7rem;">{{ paper.track }}</span>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight:600; font-size:0.88rem;">{{ paper.corresponding_author }}</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">{{ paper.email }}</div>
+              <div style="font-size:0.78rem; color:var(--text-muted);">{{ paper.institution }} &bull; {{ paper.country }}</div>
+            </td>
+            <td>
+              <a href="{{ url_for('admin.download_paper', id=paper.id) }}" class="btn btn-navy btn-sm" style="font-size:0.8rem; padding:5px 10px;">
+                <i class="bi bi-file-earmark-arrow-down-fill"></i> Download
+              </a>
+              <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
+                {{ paper.original_filename[:18] }}...
+              </div>
+            </td>
+            <td>
+              {% if paper.status == 'Accepted' %}
+                <span class="status-badge status-accepted">{{ paper.status }}</span>
+              {% elif paper.status == 'Under Review' %}
+                <span class="status-badge status-review">{{ paper.status }}</span>
+              {% elif paper.status == 'Rejected' %}
+                <span class="status-badge status-rejected">{{ paper.status }}</span>
+              {% elif paper.status == 'Camera Ready' %}
+                <span class="status-badge status-cameraready">{{ paper.status }}</span>
+              {% else %}
+                <span class="status-badge status-submitted">{{ paper.status }}</span>
+              {% endif %}
+            </td>
+            <td style="font-size:0.82rem; color:var(--text-muted);">
+              {{ paper.submitted_at.strftime('%Y-%m-%d %H:%M') }}
+            </td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <!-- Update Status Modal Trigger -->
+                <button type="button" class="btn btn-primary btn-sm btn-update-status" 
+                        data-id="{{ paper.id }}" 
+                        data-paper-id="{{ paper.paper_id }}"
+                        data-status="{{ paper.status }}"
+                        data-comments="{{ paper.reviewer_comments or '' }}"
+                        style="padding:5px 10px; font-size:0.8rem;" title="Change Status & Comments">
+                  <i class="bi bi-pencil-square"></i> Status
+                </button>
+
+                <!-- Delete Submission Form -->
+                <form action="{{ url_for('admin.delete_submission', id=paper.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this paper and its file?');" style="display:inline;">
+                  <button type="submit" class="btn btn-sm" style="background:#fee2e2; color:#dc2626; border:none; padding:5px 8px;" title="Delete Submission">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" style="text-align:center; padding:36px; color:var(--text-muted);">
+              No research paper submissions matched your criteria.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Status Update Modal -->
+<div class="modal" id="status-modal">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h4 style="margin:0;">Update Submission Status</h4>
+      <button type="button" class="modal-close">&times;</button>
+    </div>
+    <form id="status-modal-form" method="POST">
+      <div class="modal-body">
+        <div style="margin-bottom:16px;">
+          <label style="font-size:0.8rem; text-transform:uppercase; color:var(--text-muted); font-weight:700;">Paper Identification:</label>
+          <div id="modal-paper-id" style="font-family:'Outfit', sans-serif; font-size:1.2rem; font-weight:700; color:var(--primary-navy);"></div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:18px;">
+          <label class="form-label" for="modal-status-select">Select New Status</label>
+          <select id="modal-status-select" name="status" class="form-select" required>
+            <option value="Submitted">Submitted (Initial Ingestion)</option>
+            <option value="Under Review">Under Review (Assigned to TPC)</option>
+            <option value="Accepted">Accepted (Author Notified)</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Camera Ready">Camera Ready (Final PDF Received)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="modal-comments">Editorial &amp; Reviewer Comments</label>
+          <textarea id="modal-comments" name="reviewer_comments" class="form-textarea" rows="4" placeholder="Enter review summary, camera-ready requirements, or revision notes..."></textarea>
+          <span class="form-helper">These comments will be visible to the author on their status lookup page.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-gold btn-sm" id="modal-cancel-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

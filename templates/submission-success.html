@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Submission Received - {{ submission.paper_id }} | ICBDTT-2026{% endblock %}
+
+{% block content %}
+
+<section class="section">
+  <div class="container container-narrow">
+    
+    <div class="voucher-card">
+      
+      <!-- Voucher Header -->
+      <div class="voucher-header">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <img src="{{ url_for('static', filename='images/snpsu_logo.webp') }}" alt="SNPSU" style="height:44px; filter:brightness(0) invert(1);">
+          <div>
+            <h3 style="color:#ffffff; font-size:1.35rem; margin:0;">Submission Confirmation</h3>
+            <span style="color:var(--accent-gold); font-size:0.85rem; font-weight:600;">Sapthagiri NPS University &bull; ICBDTT-2026</span>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span class="badge badge-success"><i class="bi bi-check-circle-fill"></i> Successfully Submitted</span>
+        </div>
+      </div>
+
+      <!-- Voucher Body -->
+      <div class="voucher-body">
+        
+        <!-- Generated Paper ID Highlight -->
+        <div class="voucher-id-highlight">
+          <div style="font-size:0.82rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:4px;">
+            Official Paper Identification Number
+          </div>
+          <div class="voucher-id-val">{{ submission.paper_id }}</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+            Please quote this Paper ID in all future correspondence with the conference chairs.
+          </div>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="voucher-details-grid">
+          <div>
+            <div class="voucher-detail-label">Paper Title</div>
+            <div class="voucher-detail-val" style="font-size:1.05rem;">{{ submission.title }}</div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Conference Track</div>
+            <div class="voucher-detail-val">{{ submission.track }}</div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Corresponding Author</div>
+            <div class="voucher-detail-val">{{ submission.corresponding_author }}</div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Author Email</div>
+            <div class="voucher-detail-val">{{ submission.email }}</div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Affiliated Institution</div>
+            <div class="voucher-detail-val">{{ submission.institution }}</div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Uploaded File</div>
+            <div class="voucher-detail-val" style="color:#0284c7;">
+              <i class="bi bi-file-earmark-check"></i> {{ submission.original_filename }}
+            </div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Submission Timestamp</div>
+            <div class="voucher-detail-val">{{ submission.submitted_at.strftime('%B %d, %Y at %I:%M %p UTC') }}</div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Current Review Status</div>
+            <div class="voucher-detail-val">
+              <span class="badge badge-navy">{{ submission.status }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- What Happens Next Timeline -->
+        <div style="background:var(--bg-subtle); border-radius:var(--radius-md); padding:20px 24px; border:1px solid var(--border-light); margin-bottom:28px;">
+          <h4 style="font-size:1.05rem; color:var(--primary-navy); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+            <i class="bi bi-clock-history" style="color:var(--accent-gold);"></i> What Happens Next?
+          </h4>
+          <ol style="margin-left:20px; font-size:0.9rem; color:var(--text-secondary); line-height:1.7;">
+            <li><strong>Peer Review:</strong> Your anonymized manuscript has been routed to independent expert reviewers for double-blind evaluation.</li>
+            <li><strong>Review Notification:</strong> Feedback and acceptance decision will be emailed to <code>{{ submission.email }}</code> on or before <strong>[ACCEPTANCE DATE]</strong>.</li>
+            <li><strong>Camera-Ready &amp; Registration:</strong> Upon acceptance, authors must upload the camera-ready version and complete conference registration.</li>
+          </ol>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+          <button onclick="window.print()" class="btn btn-navy">
+            <i class="bi bi-printer"></i> Print / Save Confirmation PDF
+          </button>
+          <div style="display:flex; gap:12px;">
+            <a href="{{ url_for('registration.register') }}?paper_id={{ submission.paper_id }}" class="btn btn-primary">
+              <i class="bi bi-ticket-perforated-fill"></i> Proceed to Registration
+            </a>
+            <a href="{{ url_for('main.index') }}" class="btn btn-outline-gold">
+              Back to Home
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

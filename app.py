@@ -1,0 +1,67 @@
+import os
+from flask import Flask, render_template
+from config import Config
+from models import db
+from routes import main_bp, submission_bp, registration_bp, contact_bp, admin_bp
+from seed_data import seed_database
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    # Ensure required directories exist
+    os.makedirs(os.path.join(app.root_path, 'instance'), exist_ok=True)
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(app.config['SPEAKER_UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(os.path.join(app.root_path, 'static', 'downloads'), exist_ok=True)
+
+    # Initialize extensions
+    db.init_app(app)
+
+    # Register blueprints
+    app.register_blueprint(main_bp)
+    app.register_blueprint(submission_bp)
+    app.register_blueprint(registration_bp)
+    app.register_blueprint(contact_bp)
+    app.register_blueprint(admin_bp)
+
+    # Context processor to make conference branding constants available in all templates
+    @app.context_processor
+    def inject_conference_info():
+        return {
+            'CONF_NAME': app.config['CONFERENCE_NAME'],
+            'CONF_ACRONYM': app.config['CONFERENCE_ACRONYM'],
+            'CONF_THEME': app.config['CONFERENCE_THEME'],
+            'CONF_HOST': app.config['HOST_INSTITUTION'],
+            'CONF_LOCATION': app.config['HOST_LOCATION'],
+            'CONF_CAMPUS': app.config['HOST_CAMPUS'],
+            'CONF_EMAIL': app.config['CONFERENCE_EMAIL'],
+            'CONF_PHONE': app.config['CONFERENCE_PHONE'],
+            'CONF_DATE': app.config['CONFERENCE_DATE'],
+            'CONF_VENUE': app.config['VENUE_NAME'],
+            'CONF_FEE': app.config['REGISTRATION_FEE_PLACEHOLDER'],
+            'CURRENT_YEAR': 2026
+        }
+
+    # Error handlers
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
+
+    @app.errorhandler(413)
+    def request_entity_too_large(e):
+        return render_template('413.html'), 413
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        return render_template('500.html'), 500
+
+    return app
+
+app = create_app()
+
+if __name__ == '__main__':
+    # Ensure database is created and seeded
+    with app.app_context():
+        db.create_all()
+    app.run(host='127.0.0.1', port=5000, debug=True)

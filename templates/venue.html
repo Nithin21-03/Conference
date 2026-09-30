@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Venue & Travel | International Conference on Big Data Tools and Techniques{% endblock %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<section style="background: linear-gradient(135deg, #001040 0%, #000c30 100%); color: #ffffff; padding: 50px 0; border-bottom: 3px solid var(--accent-gold);">
+  <div class="container">
+    <span class="badge badge-gold" style="margin-bottom: 12px;">Venue &amp; Location</span>
+    <h1 style="color:#ffffff; font-size:2.5rem; margin-bottom:8px;">Conference Venue &amp; Location</h1>
+    <p style="color:#cbd5e1; font-size:1.05rem; max-width:760px;">
+      Sapthagiri NPS University (SNPSU), Bengaluru, Karnataka, India
+    </p>
+  </div>
+</section>
+
+<!-- Venue Information Section -->
+<section class="section">
+  <div class="container">
+    
+    <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:40px; margin-bottom:50px;" class="about-grid">
+      
+      <div>
+        <span class="section-subtitle">Venue Information</span>
+        <h2 class="section-title">{{ CONF_VENUE }}</h2>
+        <p style="color:var(--text-secondary); font-size:1rem; line-height:1.7; margin-bottom:20px;">
+          The International Conference on Big Data Tools and Techniques will be conducted at Sapthagiri NPS University (SNPSU), Bengaluru.
+        </p>
+
+        <div style="background:var(--bg-subtle); border-radius:var(--radius-md); padding:24px; border:1px solid var(--border-light); margin-bottom:28px;">
+          <h4 style="font-size:1.1rem; color:var(--primary-navy); margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+            <i class="bi bi-geo-alt-fill" style="color:var(--accent-gold);"></i> Address &amp; Location Details
+          </h4>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.95rem; color:var(--text-secondary);">
+            <div><strong>Venue:</strong> {{ CONF_VENUE }}</div>
+            <div><strong>University:</strong> Sapthagiri NPS University (SNPSU)</div>
+            <div><strong>Address:</strong> {{ CONF_CAMPUS }}</div>
+            <div><strong>City:</strong> Bengaluru, Karnataka, India</div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+          <a href="https://maps.google.com/?q=Sapthagiri+NPS+University+Bengaluru" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+            <i class="bi bi-compass"></i> Get Directions
+          </a>
+          <a href="{{ url_for('contact.contact') }}" class="btn btn-outline-gold btn-lg">
+            Contact Secretariat
+          </a>
+        </div>
+      </div>
+
+      <!-- Map Integration Placeholder -->
+      <div style="background:linear-gradient(145deg, #001040 0%, #123569 100%); border-radius:var(--radius-xl); padding:36px; color:#ffffff; display:flex; flex-direction:column; justify-content:center; text-align:center; box-shadow:var(--shadow-md); border:1px solid rgba(198,158,102,0.3);">
+        <i class="bi bi-pin-map-fill" style="font-size:3.5rem; color:var(--accent-gold); margin-bottom:16px;"></i>
+        <h3 style="color:#ffffff; font-size:1.35rem; margin-bottom:10px;">University Campus Location</h3>
+        <p style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; margin-bottom:24px;">
+          Sapthagiri NPS University Campus, Bengaluru
+        </p>
+        <a href="https://maps.google.com/?q=Sapthagiri+NPS+University+Bengaluru" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;">
+          <i class="bi bi-geo-alt"></i> View on Google Maps
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Transportation Information -->
+    <div style="margin-bottom:50px;">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="section-subtitle">Transit</span>
+        <h2 class="section-title">Transportation Information</h2>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:22px;">
+        
+        <div style="background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:26px; box-shadow:var(--shadow-sm);">
+          <div style="width:48px; height:48px; border-radius:var(--radius-sm); background:var(--accent-gold-light); color:var(--accent-gold); display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:14px;">
+            <i class="bi bi-airplane-fill"></i>
+          </div>
+          <h4 style="font-size:1.15rem; color:var(--primary-navy); margin-bottom:8px;">Air Travel</h4>
+          <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">
+            Delegates flying into Bengaluru will arrive at Kempegowda International Airport (BLR), which connects to major domestic and international destinations.
+          </p>
+        </div>
+
+        <div style="background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:26px; box-shadow:var(--shadow-sm);">
+          <div style="width:48px; height:48px; border-radius:var(--radius-sm); background:rgba(0,16,64,0.08); color:var(--primary-navy); display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:14px;">
+            <i class="bi bi-train-front-fill"></i>
+          </div>
+          <h4 style="font-size:1.15rem; color:var(--primary-navy); margin-bottom:8px;">Rail Travel</h4>
+          <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">
+            Bengaluru is well connected via Indian Railways network through major city railway stations.
+          </p>
+        </div>
+
+        <div style="background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:26px; box-shadow:var(--shadow-sm);">
+          <div style="width:48px; height:48px; border-radius:var(--radius-sm); background:rgba(2,132,199,0.1); color:var(--tech-cyan); display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:14px;">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+          <h4 style="font-size:1.15rem; color:var(--primary-navy); margin-bottom:8px;">Local Transit</h4>
+          <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">
+            City taxis, public transit, and app-based cabs operate across Bengaluru with direct access to Sapthagiri NPS University Campus.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Nearby Accommodation Information -->
+    <div>
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="section-subtitle">Lodging</span>
+        <h2 class="section-title">Nearby Accommodation Information</h2>
+      </div>
+
+      <div style="background:var(--bg-subtle); border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:32px; text-align:center;">
+        <i class="bi bi-houses-fill" style="font-size:2.8rem; color:var(--accent-gold); margin-bottom:12px; display:inline-block;"></i>
+        <h3 style="font-size:1.25rem; color:var(--primary-navy); margin-bottom:8px;">Accommodation Details</h3>
+        <p style="color:var(--text-secondary); max-width:650px; margin:0 auto 20px; font-size:0.95rem; line-height:1.6;">
+          Information regarding recommended accommodation, partner hotels, and campus guest housing in Bengaluru will be updated and shared with registered participants.
+        </p>
+        <a href="{{ url_for('contact.contact') }}" class="btn btn-outline-gold btn-sm">
+          Inquire About Accommodation
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

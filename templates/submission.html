@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Paper Submission Portal | ICBDTT-2026 Sapthagiri NPS University{% endblock %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<section style="background: linear-gradient(135deg, #001040 0%, #000c30 100%); color: #ffffff; padding: 50px 0; border-bottom: 3px solid var(--accent-gold);">
+  <div class="container">
+    <span class="badge badge-gold" style="margin-bottom: 12px;">Submission Portal</span>
+    <h1 style="color:#ffffff; font-size:2.5rem; margin-bottom:8px;">Online Research Paper Submission</h1>
+    <p style="color:#cbd5e1; font-size:1.05rem; max-width:720px;">
+      Submit your manuscript for ICBDTT-2026. Please ensure your paper is prepared according to the formatting guidelines before uploading.
+    </p>
+  </div>
+</section>
+
+<!-- Submission Form Section -->
+<section class="section">
+  <div class="container container-narrow">
+
+    <!-- Notice Bar -->
+    <div style="background:var(--accent-gold-light); border:1px solid var(--accent-gold-border); border-radius:var(--radius-md); padding:16px 20px; margin-bottom:32px; display:flex; align-items:flex-start; gap:14px;">
+      <i class="bi bi-info-circle-fill" style="color:var(--accent-gold); font-size:1.4rem; margin-top:2px;"></i>
+      <div style="font-size:0.9rem; color:#63481c; line-height:1.6;">
+        <strong>Important Note:</strong> Submissions must be anonymized for double-blind review. Max paper length: <strong>6-8 pages</strong>. Accepted file formats: <strong>PDF, DOC, DOCX (Max 16 MB)</strong>. An official Paper ID will be generated upon successful submission.
+      </div>
+    </div>
+
+    <!-- The Form -->
+    <div class="form-card">
+      <form action="{{ url_for('submission.submit_paper') }}" method="POST" enctype="multipart/form-data" id="submission-form">
+        
+        <!-- SECTION 1: Corresponding Author -->
+        <h3 style="font-size:1.35rem; color:var(--primary-navy); margin-bottom:20px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px; display:flex; align-items:center; gap:8px;">
+          <i class="bi bi-person-badge-fill" style="color:var(--accent-gold);"></i> 1. Corresponding Author Information
+        </h3>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="corresponding_author">Full Name <span class="req">*</span></label>
+            <input type="text" id="corresponding_author" name="corresponding_author" class="form-input" value="{{ form.get('corresponding_author', '') }}" placeholder="Enter author full name" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address <span class="req">*</span></label>
+            <input type="email" id="email" name="email" class="form-input" value="{{ form.get('email', '') }}" placeholder="e.g. author@university.edu" required>
+            <span class="form-helper">All peer-review notifications will be sent to this email.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="phone">Phone / Mobile Number <span class="req">*</span></label>
+            <input type="tel" id="phone" name="phone" class="form-input" value="{{ form.get('phone', '') }}" placeholder="e.g. +91 98765 43210" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="country">Country <span class="req">*</span></label>
+            <input type="text" id="country" name="country" class="form-input" value="{{ form.get('country', 'India') }}" placeholder="e.g. India, USA, Germany" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="institution">Affiliated Institution / University <span class="req">*</span></label>
+            <input type="text" id="institution" name="institution" class="form-input" value="{{ form.get('institution', '') }}" placeholder="e.g. Sapthagiri NPS University" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="department">Department / Faculty <span class="req">*</span></label>
+            <input type="text" id="department" name="department" class="form-input" value="{{ form.get('department', '') }}" placeholder="e.g. Computer Science & Engineering" required>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Paper Details -->
+        <h3 style="font-size:1.35rem; color:var(--primary-navy); margin:40px 0 20px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px; display:flex; align-items:center; gap:8px;">
+          <i class="bi bi-file-earmark-richtext-fill" style="color:var(--accent-gold);"></i> 2. Paper Metadata
+        </h3>
+
+        <div class="form-grid">
+          <div class="form-group form-full">
+            <label class="form-label" for="title">Paper Title <span class="req">*</span></label>
+            <input type="text" id="title" name="title" class="form-input" value="{{ form.get('title', '') }}" placeholder="Enter full paper title" required>
+          </div>
+
+          <div class="form-group form-full">
+            <label class="form-label" for="track">Select Conference Track <span class="req">*</span></label>
+            <select id="track" name="track" class="form-select" required>
+              <option value="">-- Choose Relevant Research Track --</option>
+              {% for t in tracks %}
+              <option value="{{ t.title }}" {% if form.get('track') == t.title or request.args.get('track') == t.title %}selected{% endif %}>
+                {{ t.code }}: {{ t.title }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group form-full">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label class="form-label" for="abstract">Paper Abstract <span class="req">*</span></label>
+              <span id="abstract-word-count" style="font-size:0.82rem; font-weight:600; color:var(--text-muted);">0 words</span>
+            </div>
+            <textarea id="abstract" name="abstract" class="form-textarea" placeholder="Paste your complete abstract here (150 - 300 words recommended)..." rows="6" required>{{ form.get('abstract', '') }}</textarea>
+            <span class="form-helper">
+              <span id="abstract-min-warn" style="color:#dc2626; display:none;">(Minimum 30 words required)</span>
+              A concise summary of background, proposed contribution, methodology, empirical results, and conclusion.
+            </span>
+          </div>
+
+          <div class="form-group form-full">
+            <label class="form-label" for="keywords">Keywords <span class="req">*</span></label>
+            <input type="text" id="keywords" name="keywords" class="form-input" value="{{ form.get('keywords', '') }}" placeholder="e.g. Big Data, Machine Learning, Cloud Analytics" required>
+            <span class="form-helper">Provide at least 3-6 keywords separated by commas.</span>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Co-Authors (Optional) -->
+        <h3 style="font-size:1.35rem; color:var(--primary-navy); margin:40px 0 20px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
+          <span style="display:flex; align-items:center; gap:8px;">
+            <i class="bi bi-people-fill" style="color:var(--accent-gold);"></i> 3. Additional Authors / Co-Authors
+          </span>
+          <button type="button" id="add-coauthor-btn" class="btn btn-outline-gold btn-sm">
+            <i class="bi bi-plus-circle"></i> Add Co-Author
+          </button>
+        </h3>
+        
+        <input type="hidden" name="author_count" id="author_count" value="1">
+        <div id="coauthors-container">
+          <!-- Dynamic coauthor inputs injected via JavaScript -->
+        </div>
+
+        <!-- SECTION 4: File Upload -->
+        <h3 style="font-size:1.35rem; color:var(--primary-navy); margin:40px 0 20px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px; display:flex; align-items:center; gap:8px;">
+          <i class="bi bi-upload" style="color:var(--accent-gold);"></i> 4. Manuscript File Upload
+        </h3>
+
+        <div class="form-group form-full">
+          <label class="form-label">Upload Research Manuscript <span class="req">*</span></label>
+          <div class="file-dropzone" id="paper-dropzone">
+            <input type="file" name="paper_file" id="paper_file" class="file-input-hidden" accept=".pdf,.doc,.docx" required>
+            <i class="bi bi-cloud-arrow-up-fill"></i>
+            <div class="file-dropzone-text">Click to Browse or Drag &amp; Drop Paper Manuscript</div>
+            <div class="file-dropzone-hint">Accepted Formats: <strong>PDF, DOC, DOCX</strong> &bull; Maximum File Size: <strong>16 MB</strong></div>
+          </div>
+
+          <div id="file-preview" class="file-chosen-preview">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <i class="bi bi-file-earmark-check-fill" style="color:#059669; font-size:1.2rem; margin-right:6px;"></i>
+                <span id="filename-display">filename.pdf</span>
+                <span id="filesize-display" style="font-size:0.8rem; color:var(--text-muted); margin-left:8px;">(0 KB)</span>
+              </div>
+              <span style="color:#059669; font-size:0.85rem; font-weight:700;"><i class="bi bi-check-lg"></i> Ready to Upload</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: Declaration -->
+        <div style="margin:36px 0 28px; background:var(--bg-subtle); padding:20px; border-radius:var(--radius-md); border:1px solid var(--border-light);">
+          <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer;">
+            <input type="checkbox" name="declaration" required style="margin-top:4px;">
+            <span style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">
+              I hereby declare that this manuscript represents original research, is not plagiarized, has not been published elsewhere, and is not currently under review by any other venue. I confirm that all authors approve of this submission to ICBDTT-2026.
+            </span>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <div style="text-align:center;">
+          <button type="submit" class="btn btn-primary btn-lg" style="min-width:280px;">
+            <i class="bi bi-check2-circle"></i> Submit Research Paper
+          </button>
+          <div style="margin-top:12px; font-size:0.85rem; color:var(--text-muted);">
+            Already submitted? <a href="{{ url_for('submission.track_status') }}" style="font-weight:600; color:var(--primary-navy);">Track your paper status here &rarr;</a>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/submission.js') }}"></script>
+{% endblock %}

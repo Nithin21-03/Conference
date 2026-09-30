@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Frequently Asked Questions (FAQ) | ICBDTT-2026 Sapthagiri NPS University{% endblock %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<section style="background: linear-gradient(135deg, #001040 0%, #000c30 100%); color: #ffffff; padding: 60px 0; border-bottom: 3px solid var(--accent-gold);">
+  <div class="container">
+    <span class="badge badge-gold" style="margin-bottom: 12px;">Help &amp; Answers</span>
+    <h1 style="color:#ffffff; font-size:2.6rem; margin-bottom:12px;">Frequently Asked Questions</h1>
+    <p style="color:#cbd5e1; font-size:1.1rem; max-width:780px;">
+      Find answers to common inquiries regarding manuscript submissions, peer review, registration packages, and venue logistics.
+    </p>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="section">
+  <div class="container container-narrow">
+
+    <!-- Categories Filter Pills -->
+    <div style="display:flex; justify-content:center; gap:10px; margin-bottom:36px; flex-wrap:wrap;">
+      <button class="btn btn-navy btn-sm faq-filter-btn active" data-cat="all">All Questions</button>
+      {% for cat in categories %}
+      <button class="btn btn-outline-gold btn-sm faq-filter-btn" data-cat="{{ cat }}">{{ cat }}</button>
+      {% endfor %}
+    </div>
+
+    <!-- Accordion Container -->
+    <div class="accordion" id="conference-faq-accordion">
+      {% for faq in faqs %}
+      <div class="accordion-item" data-category="{{ faq.category }}">
+        <button class="accordion-trigger">
+          <span>{{ faq.question }}</span>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="accordion-content">
+          <p>{{ faq.answer }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Still Have Questions Box -->
+    <div style="margin-top:60px; background:var(--bg-subtle); border-radius:var(--radius-lg); padding:36px; text-align:center; border:1px solid var(--border-light);">
+      <h3 style="font-size:1.4rem; color:var(--primary-navy); margin-bottom:10px;">Didn't Find an Answer to Your Question?</h3>
+      <p style="color:var(--text-secondary); max-width:600px; margin:0 auto 20px; font-size:0.95rem;">
+        Our conference secretariat is on standby to help with custom author requests, institutional sponsorships, and group registrations.
+      </p>
+      <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">
+        <i class="bi bi-envelope-fill"></i> Contact Conference Secretariat
+      </a>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const filterBtns = document.querySelectorAll('.faq-filter-btn');
+  const items = document.querySelectorAll('.accordion-item');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(b => {
+        b.classList.remove('btn-navy', 'active');
+        b.classList.add('btn-outline-gold');
+      });
+      this.classList.remove('btn-outline-gold');
+      this.classList.add('btn-navy', 'active');
+
+      const cat = this.getAttribute('data-cat');
+      items.forEach(item => {
+        if (cat === 'all' || item.getAttribute('data-category') === cat) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+});
+</script>
+{% endblock %}

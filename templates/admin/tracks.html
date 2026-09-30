@@ -1,0 +1,93 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Manage Conference Tracks | ICBDTT-2026 Admin{% endblock %}
+{% block page_title %}Conference Research Tracks Management{% endblock %}
+
+{% block content %}
+
+<div style="display:grid; grid-template-columns:1.5fr 1fr; gap:32px;" class="about-grid">
+  
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h3 style="margin:0;">Active Tracks ({{ tracks|length }})</h3>
+    </div>
+    <div class="admin-card-body" style="padding:0;">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Track</th>
+            <th>Title &amp; Scope</th>
+            <th>Icon</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in tracks %}
+          <tr>
+            <td><strong style="color:var(--primary-navy);">{{ t.code }}</strong></td>
+            <td>
+              <div style="font-weight:700; color:var(--primary-navy);">{{ t.title }}</div>
+              <div style="font-size:0.8rem; color:var(--text-muted); line-height:1.4; max-width:320px;">
+                {{ t.description[:120] }}...
+              </div>
+            </td>
+            <td><i class="bi {{ t.icon }}" style="font-size:1.3rem; color:var(--accent-gold);"></i></td>
+            <td>
+              <form action="{{ url_for('admin.delete_track', id=t.id) }}" method="POST" onsubmit="return confirm('Delete this track?');" style="display:inline;">
+                <button type="submit" class="btn btn-sm" style="background:#fee2e2; color:#dc2626; border:none; padding:5px 8px;" title="Delete Track">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3 style="font-size:1.25rem; color:var(--primary-navy); margin-bottom:20px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px;">
+      <i class="bi bi-plus-square" style="color:var(--accent-gold);"></i> Add New Track
+    </h3>
+
+    <form action="{{ url_for('admin.add_track') }}" method="POST">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="tr_num">Track Number <span class="req">*</span></label>
+        <input type="number" id="tr_num" name="track_number" class="form-input" value="{{ (tracks|length) + 1 }}" min="1" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="tr_code">Track Code <span class="req">*</span></label>
+        <input type="text" id="tr_code" name="code" class="form-input" placeholder="e.g. TRACK-07" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="tr_title">Track Title <span class="req">*</span></label>
+        <input type="text" id="tr_title" name="title" class="form-input" placeholder="e.g. Quantum Data Computing" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="tr_icon">Bootstrap Icon Class</label>
+        <input type="text" id="tr_icon" name="icon" class="form-input" value="bi-diagram-3" placeholder="bi-cpu, bi-database">
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="tr_desc">Description <span class="req">*</span></label>
+        <textarea id="tr_desc" name="description" class="form-textarea" rows="2" placeholder="Brief summary of track scope..." required></textarea>
+      </div>
+
+      <div class="form-group" style="margin-bottom:20px;">
+        <label class="form-label" for="tr_topics">Topics (one per line)</label>
+        <textarea id="tr_topics" name="topics" class="form-textarea" rows="3" placeholder="Topic 1&#10;Topic 2&#10;Topic 3"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;">
+        <i class="bi bi-plus-circle"></i> Save Track
+      </button>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

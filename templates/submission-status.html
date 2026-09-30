@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Track Paper Status | ICBDTT-2026 Sapthagiri NPS University{% endblock %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<section style="background: linear-gradient(135deg, #001040 0%, #000c30 100%); color: #ffffff; padding: 50px 0; border-bottom: 3px solid var(--accent-gold);">
+  <div class="container">
+    <span class="badge badge-gold" style="margin-bottom: 12px;">Author Portal</span>
+    <h1 style="color:#ffffff; font-size:2.5rem; margin-bottom:8px;">Track Manuscript Review Status</h1>
+    <p style="color:#cbd5e1; font-size:1.05rem; max-width:720px;">
+      Check the real-time peer-review progress and editorial status of your submitted paper.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container container-narrow">
+    
+    <!-- Search Card -->
+    <div class="form-card" style="margin-bottom:40px;">
+      <h3 style="font-size:1.25rem; color:var(--primary-navy); margin-bottom:20px; border-left:3px solid var(--accent-gold); padding-left:12px;">
+        Lookup Your Paper
+      </h3>
+      <form action="{{ url_for('submission.track_status') }}" method="POST">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="paper_id">Paper Identification Number <span class="req">*</span></label>
+            <input type="text" id="paper_id" name="paper_id" class="form-input" placeholder="e.g. SNPSU-BDTT-P-4821" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Registered Author Email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="e.g. author@university.edu" required>
+          </div>
+          <div class="form-group form-full" style="text-align:right;">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-search"></i> Check Status
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Search Result Display -->
+    {% if result %}
+    <div class="voucher-card" style="border-color:var(--tech-cyan);">
+      <div class="voucher-header" style="background:var(--primary-navy);">
+        <div>
+          <h3 style="color:#ffffff; font-size:1.3rem; margin:0;">Status Report: {{ result.paper_id }}</h3>
+          <span style="color:var(--accent-gold); font-size:0.85rem;">{{ result.title }}</span>
+        </div>
+        <div>
+          <span class="badge badge-success">{{ result.status }}</span>
+        </div>
+      </div>
+      <div class="voucher-body">
+        
+        <!-- Status Progression Bar -->
+        <div style="margin-bottom:30px; padding:20px; background:var(--bg-subtle); border-radius:var(--radius-md); border:1px solid var(--border-light);">
+          <div style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); font-weight:700; margin-bottom:14px;">
+            Workflow Progress
+          </div>
+          <div style="display:flex; justify-content:space-between; position:relative; align-items:center;">
+            
+            <div style="text-align:center; z-index:2;">
+              <div style="width:36px; height:36px; border-radius:50%; background:#059669; color:#fff; display:flex; align-items:center; justify-content:center; margin:0 auto 6px;">
+                <i class="bi bi-check-lg"></i>
+              </div>
+              <span style="font-size:0.75rem; font-weight:700; color:var(--primary-navy);">Submitted</span>
+            </div>
+
+            <div style="text-align:center; z-index:2;">
+              <div style="width:36px; height:36px; border-radius:50%; background:{% if result.status in ['Under Review', 'Accepted', 'Camera Ready'] %}#059669{% else %}#e2e8f0{% endif %}; color:{% if result.status in ['Under Review', 'Accepted', 'Camera Ready'] %}#fff{% else %}#64748b{% endif %}; display:flex; align-items:center; justify-content:center; margin:0 auto 6px;">
+                <i class="bi bi-search"></i>
+              </div>
+              <span style="font-size:0.75rem; font-weight:700; color:var(--primary-navy);">Review</span>
+            </div>
+
+            <div style="text-align:center; z-index:2;">
+              <div style="width:36px; height:36px; border-radius:50%; background:{% if result.status in ['Accepted', 'Camera Ready'] %}#059669{% elif result.status == 'Rejected' %}#dc2626{% else %}#e2e8f0{% endif %}; color:{% if result.status in ['Accepted', 'Camera Ready', 'Rejected'] %}#fff{% else %}#64748b{% endif %}; display:flex; align-items:center; justify-content:center; margin:0 auto 6px;">
+                {% if result.status == 'Rejected' %}<i class="bi bi-x-lg"></i>{% else %}<i class="bi bi-award"></i>{% endif %}
+              </div>
+              <span style="font-size:0.75rem; font-weight:700; color:var(--primary-navy);">Decision</span>
+            </div>
+
+            <div style="text-align:center; z-index:2;">
+              <div style="width:36px; height:36px; border-radius:50%; background:{% if result.status == 'Camera Ready' %}#059669{% else %}#e2e8f0{% endif %}; color:{% if result.status == 'Camera Ready' %}#fff{% else %}#64748b{% endif %}; display:flex; align-items:center; justify-content:center; margin:0 auto 6px;">
+                <i class="bi bi-file-earmark-check"></i>
+              </div>
+              <span style="font-size:0.75rem; font-weight:700; color:var(--primary-navy);">Camera Ready</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="voucher-details-grid">
+          <div>
+            <div class="voucher-detail-label">Track</div>
+            <div class="voucher-detail-val">{{ result.track }}</div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Corresponding Author</div>
+            <div class="voucher-detail-val">{{ result.corresponding_author }}</div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Institution</div>
+            <div class="voucher-detail-val">{{ result.institution }}</div>
+          </div>
+          <div>
+            <div class="voucher-detail-label">Submitted On</div>
+            <div class="voucher-detail-val">{{ result.submitted_at.strftime('%B %d, %Y') }}</div>
+          </div>
+        </div>
+
+        {% if result.reviewer_comments %}
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius-sm); padding:16px; margin-top:20px;">
+          <strong style="color:#92400e; font-size:0.9rem;"><i class="bi bi-chat-quote-fill"></i> Editorial &amp; Reviewer Notes:</strong>
+          <p style="color:#78350f; font-size:0.9rem; margin-top:6px; line-height:1.6;">{{ result.reviewer_comments }}</p>
+        </div>
+        {% endif %}
+
+        {% if result.status == 'Accepted' %}
+        <div style="margin-top:24px; text-align:center;">
+          <a href="{{ url_for('registration.register') }}?paper_id={{ result.paper_id }}" class="btn btn-primary">
+            <i class="bi bi-ticket-perforated-fill"></i> Complete Author Registration Now
+          </a>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+    {% elif searched %}
+    <div style="text-align:center; padding:30px; background:var(--bg-subtle); border-radius:var(--radius-md); border:1px solid var(--border-light);">
+      <i class="bi bi-search" style="font-size:2.5rem; color:var(--text-muted); margin-bottom:12px; display:inline-block;"></i>
+      <h4 style="color:var(--primary-navy); margin-bottom:6px;">No Matching Paper Found</h4>
+      <p style="color:var(--text-secondary); font-size:0.92rem;">
+        Please double-check your Paper ID format (e.g. <code>SNPSU-BDTT-P-XXXX</code>) and registered author email address.
+      </p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

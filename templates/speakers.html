@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Keynote & Invited Speakers | ICBDTT-2026 Sapthagiri NPS University{% endblock %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<section style="background: linear-gradient(135deg, #001040 0%, #000c30 100%); color: #ffffff; padding: 60px 0; border-bottom: 3px solid var(--accent-gold);">
+  <div class="container">
+    <span class="badge badge-gold" style="margin-bottom: 12px;">Distinguished Scholars</span>
+    <h1 style="color:#ffffff; font-size:2.6rem; margin-bottom:12px;">Keynote &amp; Invited Speakers</h1>
+    <p style="color:#cbd5e1; font-size:1.1rem; max-width:780px;">
+      Distinguished scholars, researchers, and experts addressing ICBDTT-2026 at Sapthagiri NPS University.
+    </p>
+  </div>
+</section>
+
+<!-- Keynotes Section -->
+<section class="section">
+  <div class="container">
+    
+    <div class="section-header">
+      <span class="section-subtitle">Plenary Sessions</span>
+      <h2 class="section-title">Keynote Addresses</h2>
+      <p class="section-description">
+        Plenary lectures and keynote sessions on recent advances in big data tools and techniques.
+      </p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:40px;">
+      {% for speaker in keynotes %}
+      <div style="background:#ffffff; border-radius:var(--radius-lg); border:1px solid var(--border-light); box-shadow:var(--shadow-sm); overflow:hidden; display:grid; grid-template-columns:300px 1fr;" class="speaker-horizontal-card">
+        
+        <div style="background:#001040; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+          <img src="{{ url_for('static', filename='images/speakers/' + speaker.photo) if speaker.photo else url_for('static', filename='images/speakers/speaker1.svg') }}" alt="{{ speaker.name }}" style="width:100%; height:100%; object-fit:cover;">
+          <span style="position:absolute; top:16px; left:16px;" class="badge badge-gold">{{ speaker.speaker_type }}</span>
+        </div>
+
+        <div style="padding:36px; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+            <div>
+              <h3 style="font-size:1.6rem; color:var(--primary-navy); margin-bottom:4px;">{{ speaker.name }}</h3>
+              <div style="font-weight:700; color:var(--accent-gold); font-size:1rem;">{{ speaker.designation }}</div>
+              <div style="font-size:0.92rem; color:var(--text-muted);"><i class="bi bi-building"></i> {{ speaker.institution }} &bull; {{ speaker.country }}</div>
+            </div>
+          </div>
+
+          {% if speaker.session_topic %}
+          <div style="margin:16px 0 20px; background:var(--accent-gold-light); border-left:3px solid var(--accent-gold); padding:12px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0;">
+            <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; color:#8c6729;">Keynote Address:</span>
+            <div style="font-weight:700; color:var(--primary-navy); font-size:1.05rem;">"{{ speaker.session_topic }}"</div>
+          </div>
+          {% endif %}
+
+          <p style="color:var(--text-secondary); font-size:0.96rem; line-height:1.7; flex-grow:1;">
+            {{ speaker.biography }}
+          </p>
+
+          <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.85rem; color:var(--text-muted);"><i class="bi bi-geo-alt"></i> {{ CONF_VENUE }}</span>
+            <a href="{{ url_for('main.schedule') }}" class="btn btn-outline-gold btn-sm">
+              <i class="bi bi-calendar-event"></i> View Schedule Slot
+            </a>
+          </div>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<!-- Invited & Guest Speakers -->
+{% if invited %}
+<section class="section section-alt">
+  <div class="container">
+    
+    <div class="section-header">
+      <span class="section-subtitle">Invited Talks</span>
+      <h2 class="section-title">Distinguished Invited Speakers</h2>
+      <p class="section-description">
+        Special sessions and technical deep-dives led by industry leaders and academic experts.
+      </p>
+    </div>
+
+    <div class="speakers-grid">
+      {% for sp in invited %}
+      <div class="speaker-card">
+        <div class="speaker-photo-wrapper">
+          <img src="{{ url_for('static', filename='images/speakers/' + sp.photo) if sp.photo else url_for('static', filename='images/speakers/speaker1.svg') }}" alt="{{ sp.name }}">
+          <span class="speaker-type-tag">{{ sp.speaker_type }}</span>
+        </div>
+        <div class="speaker-info">
+          <h4 class="speaker-name">{{ sp.name }}</h4>
+          <div class="speaker-desig">{{ sp.designation }}</div>
+          <div class="speaker-inst"><i class="bi bi-building"></i> {{ sp.institution }}</div>
+          
+          {% if sp.session_topic %}
+          <div class="speaker-topic">
+            <strong>Invited Talk:</strong><br>
+            "{{ sp.session_topic }}"
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

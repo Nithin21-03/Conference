@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Call for Papers | International Conference on Big Data Tools and Techniques{% endblock %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<section style="background: linear-gradient(135deg, #001040 0%, #000c30 100%); color: #ffffff; padding: 50px 0; border-bottom: 3px solid var(--accent-gold);">
+  <div class="container">
+    <span class="badge badge-gold" style="margin-bottom: 12px;">Call for Papers</span>
+    <h1 style="color:#ffffff; font-size:2.5rem; margin-bottom:8px;">Call for Papers &amp; Submission Guidelines</h1>
+    <p style="color:#cbd5e1; font-size:1.05rem; max-width:760px;">
+      International Conference on Big Data Tools and Techniques &bull; Sapthagiri NPS University, Bengaluru
+    </p>
+  </div>
+</section>
+
+<!-- Main CFP Content -->
+<section class="section">
+  <div class="container">
+    
+    <div style="display:grid; grid-template-columns:1.8fr 1fr; gap:48px;" class="about-grid">
+      
+      <div>
+        <h2 style="font-size:1.75rem; margin-bottom:16px;">Submission Guidelines</h2>
+        <p style="color:var(--text-secondary); margin-bottom:20px; font-size:1rem; line-height:1.7;">
+          Authors are invited to submit original, unpublished research papers related to the conference themes and tracks. Submissions must adhere to the formatting and submission guidelines outlined below.
+        </p>
+
+        <!-- Formatting Specifications -->
+        <div style="background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:28px; margin-bottom:32px; box-shadow:var(--shadow-sm);">
+          <h3 style="font-size:1.25rem; color:var(--primary-navy); margin-bottom:16px; border-left:3px solid var(--accent-gold); padding-left:12px;">
+            Paper Format &amp; Specifications
+          </h3>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:12px; font-size:0.95rem; color:var(--text-secondary);">
+            <li style="display:flex; align-items:flex-start; gap:10px;">
+              <i class="bi bi-file-earmark-text" style="color:var(--accent-gold); font-size:1.1rem; margin-top:2px;"></i>
+              <div><strong>Paper Format:</strong> Standard double-column conference format. A downloadable Word template is provided below.</div>
+            </li>
+            <li style="display:flex; align-items:flex-start; gap:10px;">
+              <i class="bi bi-file-earmark-break" style="color:var(--accent-gold); font-size:1.1rem; margin-top:2px;"></i>
+              <div><strong>Page Limit:</strong> Full research papers should strictly adhere to the prescribed conference length (typically <strong>6 to 8 pages</strong> including figures, tables, and references).</div>
+            </li>
+            <li style="display:flex; align-items:flex-start; gap:10px;">
+              <i class="bi bi-filetype-pdf" style="color:var(--accent-gold); font-size:1.1rem; margin-top:2px;"></i>
+              <div><strong>Accepted File Formats:</strong> Manuscripts must be submitted in <strong>PDF, DOC, or DOCX</strong> format. Maximum file size: <strong>16 MB</strong>.</div>
+            </li>
+            <li style="display:flex; align-items:flex-start; gap:10px;">
+              <i class="bi bi-shield-check" style="color:var(--accent-gold); font-size:1.1rem; margin-top:2px;"></i>
+              <div><strong>Originality:</strong> All papers must represent original research not published or under review elsewhere. Plagiarism or duplicate submission is strictly prohibited.</div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Review Process -->
+        <h3 style="font-size:1.4rem; color:var(--primary-navy); margin-bottom:12px;">Review Process</h3>
+        <p style="color:var(--text-secondary); line-height:1.7; margin-bottom:18px;">
+          All submitted manuscripts will undergo a double-blind peer review process conducted by reviewers and program committee members. Papers will be evaluated on technical soundness, relevance to conference tracks, originality, research methodology, and presentation clarity.
+        </p>
+
+        <!-- Publication Information -->
+        <h3 style="font-size:1.4rem; color:var(--primary-navy); margin-bottom:12px;">Publication Information</h3>
+        <p style="color:var(--text-secondary); line-height:1.7; margin-bottom:28px;">
+          All accepted, registered, and presented papers will be included in the official conference proceedings. Specific publication partner and indexation details will be announced.
+        </p>
+
+        <!-- CTAs -->
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <a href="{{ url_for('submission.submit_paper') }}" class="btn btn-primary btn-lg">
+            <i class="bi bi-cloud-arrow-up"></i> Submit Paper Online
+          </a>
+          <a href="{{ url_for('main.download_template') }}" class="btn btn-outline-gold btn-lg">
+            <i class="bi bi-file-earmark-word"></i> Download Paper Template (.docx)
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Sidebar -->
+      <div>
+        
+        <!-- Template Download Box -->
+        <div style="background:linear-gradient(145deg, #001040 0%, #123569 100%); color:#ffffff; border-radius:var(--radius-lg); padding:30px; box-shadow:var(--shadow-md); margin-bottom:28px; border:1px solid rgba(198,158,102,0.3);">
+          <i class="bi bi-file-earmark-text-fill" style="font-size:2.5rem; color:var(--accent-gold); margin-bottom:10px; display:inline-block;"></i>
+          <h3 style="color:#ffffff; font-size:1.25rem; margin-bottom:8px;">Download Paper Template</h3>
+          <p style="color:#cbd5e1; font-size:0.88rem; line-height:1.6; margin-bottom:18px;">
+            Download the official Word manuscript template formatted for ICBDTT-2026.
+          </p>
+          <a href="{{ url_for('main.download_template') }}" class="btn btn-primary" style="width:100%;">
+            <i class="bi bi-download"></i> Download Template (.docx)
+          </a>
+        </div>
+
+        <!-- Important Dates Summary -->
+        <div style="background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:24px; box-shadow:var(--shadow-sm); margin-bottom:28px;">
+          <h4 style="font-size:1.1rem; color:var(--primary-navy); margin-bottom:16px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px;">
+            Important Dates
+          </h4>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:12px;">
+            {% for d in dates %}
+            <li style="display:flex; justify-content:space-between; align-items:flex-start; font-size:0.86rem;">
+              <span style="font-weight:600; color:var(--text-primary); max-width:60%;">{{ d.title }}</span>
+              <span style="color:var(--primary-navy); font-weight:700;">{{ d.date_value }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Contact Secretariat -->
+        <div style="background:var(--bg-subtle); border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:22px;">
+          <h5 style="font-size:0.95rem; color:var(--primary-navy); margin-bottom:8px;">Paper Inquiries</h5>
+          <p style="font-size:0.84rem; color:var(--text-secondary); margin-bottom:10px;">
+            For submission inquiries, reach the conference secretariat:
+          </p>
+          <a href="mailto:{{ CONF_EMAIL }}" style="font-size:0.85rem; font-weight:600; color:var(--primary-navy); display:inline-flex; align-items:center; gap:6px;">
+            <i class="bi bi-envelope-fill" style="color:var(--accent-gold);"></i> {{ CONF_EMAIL }}
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

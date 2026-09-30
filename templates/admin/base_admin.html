@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Conference Admin Portal | ICBDTT-2026 SNPSU{% endblock %}</title>
+  
+  <link rel="icon" type="image/webp" href="{{ url_for('static', filename='images/favicon.webp') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="admin-body">
+
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-brand">
+      <img src="{{ url_for('static', filename='images/snpsu_logo.webp') }}" alt="SNPSU" style="filter: brightness(0) invert(1);">
+      <div>
+        <div class="admin-brand-title">ICBDTT-2026</div>
+        <div class="admin-brand-subtitle">Admin Management</div>
+      </div>
+    </div>
+
+    <ul class="admin-nav">
+      <li class="admin-nav-item {% if request.path in ['/admin', '/admin/dashboard', '/admin/'] %}active{% endif %}">
+        <a href="{{ url_for('admin.dashboard') }}">
+          <i class="bi bi-speedometer2"></i> Dashboard Overview
+        </a>
+      </li>
+      <li class="admin-nav-item {% if '/admin/submissions' in request.path %}active{% endif %}">
+        <a href="{{ url_for('admin.submissions') }}">
+          <i class="bi bi-file-earmark-text"></i> Paper Submissions
+        </a>
+      </li>
+      <li class="admin-nav-item {% if '/admin/registrations' in request.path %}active{% endif %}">
+        <a href="{{ url_for('admin.registrations') }}">
+          <i class="bi bi-ticket-perforated"></i> Registrations &amp; Fees
+        </a>
+      </li>
+      <li class="admin-nav-item {% if '/admin/speakers' in request.path %}active{% endif %}">
+        <a href="{{ url_for('admin.speakers') }}">
+          <i class="bi bi-person-video3"></i> Keynote Speakers
+        </a>
+      </li>
+      <li class="admin-nav-item {% if '/admin/dates' in request.path %}active{% endif %}">
+        <a href="{{ url_for('admin.dates') }}">
+          <i class="bi bi-calendar-event"></i> Important Dates
+        </a>
+      </li>
+      <li class="admin-nav-item {% if '/admin/tracks' in request.path %}active{% endif %}">
+        <a href="{{ url_for('admin.tracks') }}">
+          <i class="bi bi-diagram-3"></i> Conference Tracks
+        </a>
+      </li>
+      <li class="admin-nav-item {% if '/admin/schedule' in request.path %}active{% endif %}">
+        <a href="{{ url_for('admin.schedule') }}">
+          <i class="bi bi-clock-history"></i> Schedule Agenda
+        </a>
+      </li>
+      <li class="admin-nav-item {% if '/admin/messages' in request.path %}active{% endif %}">
+        <a href="{{ url_for('admin.messages') }}">
+          <i class="bi bi-envelope"></i> Contact Inquiries
+        </a>
+      </li>
+    </ul>
+
+    <div class="admin-sidebar-footer">
+      <a href="{{ url_for('main.index') }}" target="_blank" style="color:#cbd5e1; font-size:0.85rem; display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+        <i class="bi bi-box-arrow-up-right" style="color:var(--accent-gold);"></i> View Public Website
+      </a>
+      <a href="{{ url_for('admin.logout') }}" style="color:#f87171; font-size:0.85rem; display:flex; align-items:center; gap:8px; font-weight:600;">
+        <i class="bi bi-box-arrow-left"></i> Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- Admin Main Content -->
+  <main class="admin-main">
+    
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button id="admin-mobile-toggle" style="display:none; background:none; border:none; font-size:1.5rem; color:var(--primary-navy); cursor:pointer;">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="admin-topbar-title">
+          <h2>{% block page_title %}Management Console{% endblock %}</h2>
+        </div>
+      </div>
+
+      <div class="admin-user-profile">
+        <div class="admin-avatar">
+          {{ session.get('admin_name', 'A')[0] }}
+        </div>
+        <div>
+          <strong style="color:var(--primary-navy); font-size:0.9rem; display:block;">{{ session.get('admin_name', 'Administrator') }}</strong>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Conference Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Flash Messages Container -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div style="padding: 20px 32px 0;">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              <span><i class="bi bi-info-circle-fill"></i> {{ message }}</span>
+              <button class="alert-close" aria-label="Dismiss">&times;</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Body Content Block -->
+    <div class="admin-body-content">
+      {% block content %}{% endblock %}
+    </div>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

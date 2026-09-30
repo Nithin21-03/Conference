@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Conference Programme Schedule | ICBDTT-2026 Sapthagiri NPS University{% endblock %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<section style="background: linear-gradient(135deg, #001040 0%, #000c30 100%); color: #ffffff; padding: 60px 0; border-bottom: 3px solid var(--accent-gold);">
+  <div class="container">
+    <span class="badge badge-gold" style="margin-bottom: 12px;">Agenda &amp; Timeline</span>
+    <h1 style="color:#ffffff; font-size:2.6rem; margin-bottom:12px;">Conference Programme Schedule</h1>
+    <p style="color:#cbd5e1; font-size:1.1rem; max-width:780px;">
+      Explore the comprehensive two-day agenda featuring keynote symposiums, oral technical presentations, panel debates, and delegate networking.
+    </p>
+  </div>
+</section>
+
+<!-- Schedule Section -->
+<section class="section">
+  <div class="container">
+    
+    <!-- Day Selector Tabs -->
+    <div style="display:flex; justify-content:center; gap:16px; margin-bottom:44px;">
+      <button id="tab-day1" class="btn btn-primary btn-lg schedule-tab-btn" onclick="showScheduleDay(1)">
+        <i class="bi bi-calendar-event"></i> Day 1
+      </button>
+      <button id="tab-day2" class="btn btn-navy btn-lg schedule-tab-btn" onclick="showScheduleDay(2)">
+        <i class="bi bi-calendar-event"></i> Day 2
+      </button>
+    </div>
+
+    <!-- Day 1 Schedule List -->
+    <div id="day1-content" class="schedule-day-container">
+      <div style="background:var(--bg-subtle); padding:16px 24px; border-radius:var(--radius-md); border:1px solid var(--border-light); margin-bottom:28px; display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="color:var(--primary-navy); font-size:1.35rem; margin:0;">
+          <i class="bi bi-calendar3" style="color:var(--accent-gold);"></i> Day 1 Programme Schedule
+        </h3>
+        <span class="badge badge-gold">All Times in IST (UTC+05:30)</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:18px;">
+        {% for item in day1_items %}
+        <div style="background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:24px; box-shadow:var(--shadow-sm); display:grid; grid-template-columns:180px 1fr; gap:24px; align-items:flex-start;" class="schedule-item-card">
+          
+          <div style="border-right:2px solid var(--accent-gold); padding-right:16px;">
+            <div style="font-family:'Outfit', sans-serif; font-size:1.15rem; font-weight:700; color:var(--primary-navy);">
+              {{ item.start_time }}
+            </div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">to {{ item.end_time }}</div>
+            <div style="margin-top:10px;">
+              {% if item.session_type == 'Keynote' %}
+                <span class="badge badge-gold">{{ item.session_type }}</span>
+              {% elif item.session_type == 'Inauguration' %}
+                <span class="badge badge-navy">{{ item.session_type }}</span>
+              {% elif item.session_type == 'Break' %}
+                <span class="badge" style="background:#f1f5f9; color:#475569;">{{ item.session_type }}</span>
+              {% else %}
+                <span class="badge badge-cyan">{{ item.session_type }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div>
+            <h4 style="font-size:1.2rem; color:var(--primary-navy); margin-bottom:6px;">{{ item.session_title }}</h4>
+            
+            {% if item.speaker %}
+            <div style="font-size:0.92rem; font-weight:600; color:var(--accent-gold); margin-bottom:4px;">
+              <i class="bi bi-person-fill"></i> {{ item.speaker }}
+            </div>
+            {% endif %}
+
+            {% if item.topic %}
+            <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:8px; line-height:1.5;">
+              {{ item.topic }}
+            </p>
+            {% endif %}
+
+            <div style="font-size:0.82rem; color:var(--text-muted); display:inline-flex; align-items:center; gap:6px;">
+              <i class="bi bi-geo-alt-fill" style="color:var(--accent-gold);"></i> <strong>Venue:</strong> {{ item.venue }}
+            </div>
+          </div>
+
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Day 2 Schedule List (Hidden by default) -->
+    <div id="day2-content" class="schedule-day-container" style="display:none;">
+      <div style="background:var(--bg-subtle); padding:16px 24px; border-radius:var(--radius-md); border:1px solid var(--border-light); margin-bottom:28px; display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="color:var(--primary-navy); font-size:1.35rem; margin:0;">
+          <i class="bi bi-calendar3" style="color:var(--accent-gold);"></i> Day 2 Programme Schedule
+        </h3>
+        <span class="badge badge-gold">All Times in IST (UTC+05:30)</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:18px;">
+        {% for item in day2_items %}
+        <div style="background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-md); padding:24px; box-shadow:var(--shadow-sm); display:grid; grid-template-columns:180px 1fr; gap:24px; align-items:flex-start;" class="schedule-item-card">
+          
+          <div style="border-right:2px solid var(--accent-gold); padding-right:16px;">
+            <div style="font-family:'Outfit', sans-serif; font-size:1.15rem; font-weight:700; color:var(--primary-navy);">
+              {{ item.start_time }}
+            </div>
+            <div style="font-size:0.82rem; color:var(--text-muted);">to {{ item.end_time }}</div>
+            <div style="margin-top:10px;">
+              {% if item.session_type == 'Keynote' %}
+                <span class="badge badge-gold">{{ item.session_type }}</span>
+              {% elif item.session_type == 'Valedictory' %}
+                <span class="badge badge-navy">{{ item.session_type }}</span>
+              {% elif item.session_type == 'Break' %}
+                <span class="badge" style="background:#f1f5f9; color:#475569;">{{ item.session_type }}</span>
+              {% else %}
+                <span class="badge badge-cyan">{{ item.session_type }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div>
+            <h4 style="font-size:1.2rem; color:var(--primary-navy); margin-bottom:6px;">{{ item.session_title }}</h4>
+            
+            {% if item.speaker %}
+            <div style="font-size:0.92rem; font-weight:600; color:var(--accent-gold); margin-bottom:4px;">
+              <i class="bi bi-person-fill"></i> {{ item.speaker }}
+            </div>
+            {% endif %}
+
+            {% if item.topic %}
+            <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:8px; line-height:1.5;">
+              {{ item.topic }}
+            </p>
+            {% endif %}
+
+            <div style="font-size:0.82rem; color:var(--text-muted); display:inline-flex; align-items:center; gap:6px;">
+              <i class="bi bi-geo-alt-fill" style="color:var(--accent-gold);"></i> <strong>Venue:</strong> {{ item.venue }}
+            </div>
+          </div>
+
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showScheduleDay(day) {
+  const d1 = document.getElementById('day1-content');
+  const d2 = document.getElementById('day2-content');
+  const btn1 = document.getElementById('tab-day1');
+  const btn2 = document.getElementById('tab-day2');
+
+  if (day === 1) {
+    d1.style.display = 'block';
+    d2.style.display = 'none';
+    btn1.className = 'btn btn-primary btn-lg schedule-tab-btn';
+    btn2.className = 'btn btn-navy btn-lg schedule-tab-btn';
+  } else {
+    d1.style.display = 'none';
+    d2.style.display = 'block';
+    btn1.className = 'btn btn-navy btn-lg schedule-tab-btn';
+    btn2.className = 'btn btn-primary btn-lg schedule-tab-btn';
+  }
+}
+</script>
+{% endblock %}
